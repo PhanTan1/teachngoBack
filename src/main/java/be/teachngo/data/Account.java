@@ -27,6 +27,9 @@ public abstract class Account implements Serializable {
     @Column(length = 45, nullable = false)
     private String status;
 
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private User user;
 
 
 }
