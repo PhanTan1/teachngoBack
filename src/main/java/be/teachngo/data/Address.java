@@ -22,7 +22,8 @@ public class Address {
     @Column(name = "postal_code", length = 8, nullable = false)
     private String postalCode;
     @Column(name = "Country", length = 45, nullable = false)
-    private String country;
+    @Enumerated(EnumType.STRING)
+    private Country country;
     @Column(name = "box_number", length = 6)
     private String boxNumber;
 
