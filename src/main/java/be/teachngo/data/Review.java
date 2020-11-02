@@ -1,14 +1,12 @@
 package be.teachngo.data;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Setter
 @Getter
-@NoArgsConstructor
 @Entity
 @Table(name = "reviews")
 public class Review {
@@ -17,9 +15,11 @@ public class Review {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "reservation_id")
+    @JoinColumn(name = "reservation_id", nullable = false)
     private Reservation reservation;
 
+    // validation to accept digit from 0 to 5 only
+    @Column(nullable = false)
     private int grade;
 
     private String review;

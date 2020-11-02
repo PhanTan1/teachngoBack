@@ -1,14 +1,13 @@
 package be.teachngo.data;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Setter
 @Getter
-@NoArgsConstructor
 @Entity
 @Table(name = "TeachersCourses")
 public class TeacherCourse {
@@ -18,12 +17,13 @@ public class TeacherCourse {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "course_id")
+    @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
     @OneToOne
-    @JoinColumn(name = "teacher_id")
+    @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
 
-    private String date;
+    @Column(nullable = false)
+    private Date date;
 }

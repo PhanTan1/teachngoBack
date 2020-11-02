@@ -17,12 +17,12 @@ public class TeacherMode {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "id_modes")
+    @ManyToOne
+    @JoinColumn(name = "id_modes", nullable = false)
     private Mode mode;
 
 
     @ManyToOne
-    @JoinColumn(name = "id_teacher")
+    @JoinColumn(name = "id_teacher", nullable = false)
     private Teacher teacher;
 }

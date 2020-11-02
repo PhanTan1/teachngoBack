@@ -18,21 +18,26 @@ public class Payement {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "id_reservation")
+    @JoinColumn(name = "id_reservation", nullable = false)
     private Reservation reservation;
 
     @Column(length = 45, nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private PayementStatus status;
 
+    @Column(length = 45, nullable = false)
     private String date;
     @Column(length = 45, nullable = false)
-    private String mode;
+    @Enumerated(EnumType.STRING)
+    private PayementStatus mode;
     @Column(length = 45)
     private String message;
     @Column(length = 45)
     private String structure;
-    @Column(nullable = false)
-    private int from;
-    @Column(nullable = false)
-    private int to;
+    @ManyToOne
+    @JoinColumn(name = "from", nullable = false)
+    private Account from;
+    @ManyToOne
+    @JoinColumn(name = "to", nullable = false)
+    private Account to;
 }

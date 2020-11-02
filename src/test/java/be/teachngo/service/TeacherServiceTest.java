@@ -28,7 +28,7 @@ class TeacherServiceTest {
         Teacher teacher2 = createTeacher("teacher_3");
         teacher2.getAdress().setPostalCode("1080");
         teacherService.save(teacher2);
-        assertEquals(2, teacherService.getAllTeachersAvailableOn("1070"));
+        assertEquals(2, teacherService.getAllTeachersAvailableOn("1070").size());
     }
 
     @Test
