@@ -34,4 +34,9 @@ public class TeacherServiceImpl implements TeacherService {
     public void removeAll() {
         teacherRepository.deleteAll();
     }
+
+    @Override
+    public List<Teacher> findAll() {
+        return teacherRepository.findAll();
+    }
 }

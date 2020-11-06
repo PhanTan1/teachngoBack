@@ -14,4 +14,6 @@ public interface TeacherService {
     Teacher save(Teacher teacher);
 
     void removeAll();
+
+    List<Teacher> findAll();
 }
