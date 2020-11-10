@@ -16,4 +16,6 @@ public interface TeacherService {
     void removeAll();
 
     List<Teacher> findAll();
+
+    void removeById(Long id);
 }

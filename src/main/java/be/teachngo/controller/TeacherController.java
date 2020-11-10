@@ -4,14 +4,11 @@ import be.teachngo.data.Teacher;
 import be.teachngo.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("api")
 public class TeacherController {
@@ -19,16 +16,26 @@ public class TeacherController {
     @Autowired
     private TeacherService teacherService;
 
-    @GetMapping("/teacher")
-    public String index(String postalCode) {
+    @GetMapping("/teachers/{postalCode}")
+    public List <Teacher> index(@PathVariable String postalCode) {
         List<Teacher> teachers = teacherService.getAllTeachersAvailableOn(postalCode);
-        teachers.forEach(teacher -> {
-        });
-        return postalCode;
+        return teachers;
     }
 
     @GetMapping("/teachers")
     public List < Teacher > getUsers() {
         return this.teacherService.findAll();
     }
+
+    @PostMapping("/teachers")
+    Teacher newTeacher(@RequestBody Teacher newTeacher) {
+        return teacherService.save(newTeacher);
+    }
+
+    @DeleteMapping("/teachers")
+    void deleteTeacher(@RequestBody Teacher newTeacher) {
+         teacherService.removeById(newTeacher.getId());
+    }
+
+
 }
