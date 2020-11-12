@@ -22,6 +22,7 @@ class StudentServiceTest {
 
     @Test
     void getAllStudentsAvailableOn() {
+        studentService.removeAll();
         studentService.save(createStudent("student_1"));
         studentService.save(createStudent("student_2"));
         Student student2 = createStudent("student_3");
