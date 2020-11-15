@@ -13,4 +13,6 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
     List<Teacher> findByAdressPostalCode(String postalCode);
 
     List<Teacher> findByAdressCountry(Country country);
+
+    Teacher findById(long id);
 }

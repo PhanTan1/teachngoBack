@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Setter
 @Getter
@@ -22,4 +23,7 @@ public class Course {
     private int size;
     @Column(length = 45, nullable = false)
     private String level;
+
+    @OneToMany
+    private List<TeacherCourse> teacherCourses;
 }
