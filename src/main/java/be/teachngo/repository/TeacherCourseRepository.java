@@ -9,4 +9,6 @@ import java.util.List;
 public interface TeacherCourseRepository extends JpaRepository<TeacherCourse, Long> {
 
     List<TeacherCourse> findByTeacher(Teacher teacher);
+
+    List<TeacherCourse> findByTeacherId(Long id);
 }

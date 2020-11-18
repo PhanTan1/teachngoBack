@@ -32,7 +32,8 @@ public class AvailabilityServiceImpl implements AvailabilityService {
         if (teacher == null) {
             return Collections.emptyList();
         } else {
-            return availabilityRepository.findByTeacher(teacher);
+            availabilityRepository.findAll();
+            return availabilityRepository.findByTeacherCourseTeacher(teacher);
         }
     }
 
@@ -45,20 +46,27 @@ public class AvailabilityServiceImpl implements AvailabilityService {
     }
 
     @Override
-    public List<Availability> findAvailabilitiesOfTeacherStartFromNow(Teacher teacher) {
+    public List<Availability> findAvailabilitiesOfTeacherStartFromNow(Teacher teacher, boolean booked) {
         final Date now = new Date();
         return findAvailabilitiesOfTeacher(teacher)
                 .stream()
                 .filter(av -> av.getStartTime().after(now))
+                .filter(av -> (booked && av.isBooked()) || (!booked && !av.isBooked()))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Availability> findAvailabilitiesOfTeacherStartFromNow(Long id) {
+    public List<Availability> findAvailabilitiesOfTeacherStartFromNow(Long id, boolean booked) {
         final Date now = new Date();
         return findAvailabilitiesOfTeacher(id)
                 .stream()
                 .filter(av -> av.getStartTime().after(now))
+                .filter(av -> (booked && av.isBooked()) || (!booked && !av.isBooked()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Availability findById(Long id) {
+        return availabilityRepository.getOne(id);
     }
 }

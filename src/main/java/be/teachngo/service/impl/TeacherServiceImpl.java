@@ -1,9 +1,7 @@
 package be.teachngo.service.impl;
 
-import be.teachngo.data.Country;
-import be.teachngo.data.Course;
-import be.teachngo.data.Teacher;
-import be.teachngo.data.TeacherCourse;
+import be.teachngo.data.*;
+import be.teachngo.repository.AddressRepository;
 import be.teachngo.repository.CourseRepository;
 import be.teachngo.repository.TeacherCourseRepository;
 import be.teachngo.repository.TeacherRepository;
@@ -26,6 +24,9 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Autowired
     private TeacherCourseRepository teacherCourseRepository;
+
+    @Autowired
+    private AddressRepository addressRepository;
 
     @Override
     public List<Teacher> getAllTeachers() {
@@ -57,6 +58,16 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Teacher save(Teacher teacher) {
+        // to avoid the detached entity passed to persist: be.teachngo.data.Address exception
+
+        if (teacher.getId() == null
+                && teacher.getAdress() != null
+                && teacher.getAdress().getId() != null) {
+            Address address = addressRepository.getOne(teacher.getAdress().getId());
+            teacher.setAdress(address);
+        }
+
+
         return teacherRepository.save(teacher);
     }
 
@@ -72,13 +83,9 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public void removeById(Long id) {
-         teacherRepository.deleteById(id);
+        teacherRepository.deleteById(id);
     }
 
-    @Override
-    public void addTeacher(Teacher teacher) {
-        teacherRepository.save(teacher);
-    }
 
     @Override
     public void updateTeacher(Teacher teacher) {
@@ -86,17 +93,30 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override // A vérifier
-    public void addCourseToTeacher(Teacher teacher, TeacherCourse teacherCourse) {
-        List<TeacherCourse> byTeacher = teacherCourseRepository.findByTeacher(teacher);
-        boolean alreadyExist = byTeacher != null && byTeacher
+    public TeacherCourse addCourseToTeacher(TeacherCourse teacherCourse) {
+        List<TeacherCourse> byTeacher = teacherCourseRepository.findByTeacherId(teacherCourse.getTeacher().getId());
+        Optional<TeacherCourse> b = byTeacher != null ? byTeacher
                 .stream()
-                .anyMatch(at -> at.getCourse().getId()
-                        .equals(teacherCourse.getCourse().getId()));
-        if (!alreadyExist) {
-            teacherCourse.setTeacher(teacher);
-            teacherCourseRepository.save(teacherCourse);
+                .filter(at -> at.getCourse().getId()
+                        .equals(teacherCourse.getCourse().getId()))
+                .findFirst() : Optional.ofNullable(null);
+        if (!b.isPresent()) {
+            if (teacherCourse.getId() == null) {
+                if (teacherCourse.getCourse() != null
+                        && teacherCourse.getCourse().getId() != null) {
+                    Course course = courseRepository.getOne(teacherCourse.getCourse().getId());
+                    teacherCourse.setCourse(course);
+                }
+                if (teacherCourse.getTeacher() != null
+                        && teacherCourse.getTeacher().getId() != null) {
+                    Teacher teacher = teacherRepository.getOne(teacherCourse.getTeacher().getId());
+                    teacherCourse.setTeacher(teacher);
+                }
+            }
+            return teacherCourseRepository.save(teacherCourse);
+        } else {
+            return b.get();
         }
-
     }
 
     @Override // A vérifier

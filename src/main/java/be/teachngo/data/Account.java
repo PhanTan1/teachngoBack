@@ -25,7 +25,8 @@ public abstract class Account implements Serializable {
     private Date updateDate;
 
     @Column(length = 45, nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private AccountStatus status;
 
     @ManyToOne
     @JoinColumn(name = "id_user")

@@ -17,9 +17,12 @@ public class Availability {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+
+    private boolean booked;
+
     @ManyToOne
     @JoinColumn(name = "teacher_id")
-    private Teacher teacher;
+    private TeacherCourse teacherCourse;
 
     @Transient
     private String date;

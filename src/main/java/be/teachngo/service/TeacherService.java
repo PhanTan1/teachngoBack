@@ -27,11 +27,9 @@ public interface TeacherService {
 
     Teacher getTeacher(Long id);
 
-    void addTeacher(Teacher teacher);
-
     void updateTeacher(Teacher teacher);
 
-    void addCourseToTeacher(Teacher teacher, TeacherCourse teacherCourse);
+    TeacherCourse addCourseToTeacher(TeacherCourse teacherCourse);
 
     void removeCourseToTeacher(Teacher teacher, TeacherCourse teacherCourse);
 

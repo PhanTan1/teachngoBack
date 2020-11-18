@@ -21,8 +21,10 @@ public class Course {
     private String description;
     @Column
     private int size;
+
     @Column(length = 45, nullable = false)
-    private String level;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @OneToMany
     private List<TeacherCourse> teacherCourses;

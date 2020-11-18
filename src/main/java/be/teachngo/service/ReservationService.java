@@ -1,9 +1,10 @@
 package be.teachngo.service;
 
-import be.teachngo.data.Payement;
 import be.teachngo.data.Reservation;
 import be.teachngo.exception.PayementException;
 import be.teachngo.exception.PayementProcessException;
+
+import java.util.List;
 
 
 public interface ReservationService {
@@ -20,5 +21,9 @@ public interface ReservationService {
      * @throws PayementProcessException when the oersistig of payment is failed
      */
 
-    Reservation makeAReservation(Reservation reservation, Payement payement);
+    Reservation makeAReservation(Reservation reservation);
+
+    Reservation findById(Long id);
+
+    List<Reservation> getAllReservations();
 }

@@ -25,7 +25,29 @@ public class AppointmentController {
     @GetMapping("/availabilities/{id}")
     List<Appointment> findAvailabilities(@PathVariable Long id) {
 
-        return availabilityService.findAvailabilitiesOfTeacherStartFromNow(id)
+        return availabilityService.findAvailabilitiesOfTeacherStartFromNow(id, false)
+                .stream()
+                .map(availabilityConverter::convertToAppointment)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/availabilities/{id}/booked")
+    List<Appointment> findBookedAvailabilities(@PathVariable Long id) {
+
+        return availabilityService.findAvailabilitiesOfTeacherStartFromNow(id, true)
+                .stream()
+                .map(availabilityConverter::convertToAppointment)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * @param id : the teacher id
+     * @return
+     */
+    @GetMapping("/availabilities/{id}/all")
+    List<Appointment> findAllAvailabilities(@PathVariable Long id) {
+
+        return availabilityService.findAvailabilitiesOfTeacher(id)
                 .stream()
                 .map(availabilityConverter::convertToAppointment)
                 .collect(Collectors.toList());

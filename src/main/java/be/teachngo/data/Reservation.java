@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Setter
 @Getter
@@ -14,16 +15,16 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @Column(nullable = false)
-    private String date;
-
     @Transient
     @Column(nullable = false)
-    private String startTime;
+    private Date date;
+
 
     @Column(nullable = false)
-    private String endTime;
+    private Date startTime;
+
+    @Column(nullable = false)
+    private Date endTime;
 
     @Column(nullable = false)
     private float price;
@@ -32,7 +33,8 @@ public class Reservation {
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
-    @OneToOne
+    // TODO ; remove the cascade because it is not possible that not peristed student can make a reservation
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_student", nullable = false)
     private Student student;
 
@@ -47,6 +49,10 @@ public class Reservation {
     @OneToOne
     @JoinColumn(name = "id_adresse")
     private Address address;
+
+
+    @Transient
+    private String ErrorMessage;
 
 
 }

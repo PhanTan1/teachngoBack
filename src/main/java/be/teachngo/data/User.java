@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity(name = "Users")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -43,6 +42,4 @@ public abstract class User implements Serializable {
     @JoinColumn(name = "address_id", nullable = false)
     private Address adress;
 
-    @OneToMany(mappedBy = "user")
-    private List<Account> accounts;
 }

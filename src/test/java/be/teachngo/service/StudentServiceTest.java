@@ -42,7 +42,7 @@ class StudentServiceTest {
         assertEquals(3, studentService.getAllStudentsAvailableOn(Country.BELGIUM).size());
     }
 
-    private Student createStudent(String login) {
+    public static Student createStudent(String login) {
         Student student = new Student();
         student.setEmail("student@teachngo.com");
         student.setFirstName("Pierre");

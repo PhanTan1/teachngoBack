@@ -17,7 +17,7 @@ public class Payement {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_reservation", nullable = false)
     private Reservation reservation;
 
@@ -29,15 +29,15 @@ public class Payement {
     private String date;
     @Column(length = 45, nullable = false)
     @Enumerated(EnumType.STRING)
-    private PayementStatus mode;
+    private PaymentMode mode;
     @Column(length = 45)
     private String message;
     @Column(length = 45)
     private String structure;
     @ManyToOne
-    @JoinColumn(name = "from", nullable = false)
-    private Account from;
+    @JoinColumn(name = "sender", nullable = false)
+    private Account sender;
     @ManyToOne
-    @JoinColumn(name = "to", nullable = false)
-    private Account to;
+    @JoinColumn(name = "reciever", nullable = false)
+    private Account reciever;
 }

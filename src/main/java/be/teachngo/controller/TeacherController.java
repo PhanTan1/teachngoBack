@@ -1,9 +1,9 @@
 package be.teachngo.controller;
 
 import be.teachngo.data.Teacher;
+import be.teachngo.data.TeacherCourse;
 import be.teachngo.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,28 +19,11 @@ public class TeacherController {
     private TeacherService teacherService;
 
     @GetMapping("/teachers")
-    public String index(Model model) {
-        List<Teacher> teachers = teacherService.getAllTeachers();
-        model.addAttribute("teachers", teachers);
-        model.addAttribute("newTeacher", new Teacher());
-        return "teacher/teachers";
+    public List<Teacher> index() {
+        return teacherService.getAllTeachers();
     }
-
-    @PostMapping("teachers/add")
-    public String addTeacher(@ModelAttribute Teacher newTeacher) {
-        teacherService.addTeacher(newTeacher);
-        return "redirect:/teachers";
-    }
-
-    @GetMapping("/teachers/update/{id}")
-    public String updateTeacher(@PathVariable Long id, Model model) {
-        Teacher teacher = teacherService.getTeacher(id);
-        model.addAttribute("teacher", teacher);
-        return UPDATE_TEACHER_PATH;
-    }
-
     @GetMapping("/teachers/{postalCode}")
-    public List <Teacher> index(@PathVariable String postalCode) {
+    public List<Teacher> findTeachersByPostalCode(@PathVariable String postalCode) {
         List<Teacher> teachers = teacherService.getAllTeachersAvailableOn(postalCode);
         return teachers;
     }
@@ -55,9 +38,15 @@ public class TeacherController {
         return teacherService.save(newTeacher);
     }
 
+
+    @PostMapping("/teachers/addCourse")
+    TeacherCourse addCourseToTeacher(@RequestBody TeacherCourse teacherCourse) {
+        return teacherService.addCourseToTeacher(teacherCourse);
+    }
+
     @DeleteMapping("/teachers")
     void deleteTeacher(@RequestBody Teacher newTeacher) {
-         teacherService.removeById(newTeacher.getId());
+        teacherService.removeById(newTeacher.getId());
     }
 
 
