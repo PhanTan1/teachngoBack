@@ -1,6 +1,7 @@
 package be.teachngo.data;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,5 +42,10 @@ public abstract class User implements Serializable {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "address_id", nullable = false)
     private Address adress;
+
+    @JsonIgnore
+    private String token;
+
+    private boolean active;
 
 }

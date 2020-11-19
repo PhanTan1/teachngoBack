@@ -13,4 +13,6 @@ public interface StudentRepository extends JpaRepository <Student, Long> {
     List<Student> findByAdressPostalCode(String postalCode);
 
     List<Student> findByAdressCountry(Country country);
+
+    Student findByLogin(String login);
 }

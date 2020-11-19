@@ -19,4 +19,5 @@ public interface StudentService {
 
     void removeById(Long id);
 
+    Student findByLogin(String login);
 }
