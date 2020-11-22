@@ -1,13 +1,11 @@
 package be.teachngo.controller;
 
 import be.teachngo.converter.AvailabilityConverter;
-import be.teachngo.data.Availability;
 import be.teachngo.dto.Appointment;
 import be.teachngo.service.AvailabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,14 +14,13 @@ import java.util.stream.Collectors;
 @RequestMapping("api")
 public class AppointmentController {
 
-    private final static SimpleDateFormat formatter5 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     @Autowired
     private AvailabilityConverter availabilityConverter;
     @Autowired
     private AvailabilityService availabilityService;
 
-    @GetMapping("/availabilities/{id}")
-    List<Appointment> findAvailabilities(@PathVariable Long id) {
+    @GetMapping("/teachers/availabilities/{id}")
+    List<Appointment> findAvailabilitiesOfTeacher(@PathVariable Long id) {
 
         return availabilityService.findAvailabilitiesOfTeacherStartFromNow(id, false)
                 .stream()
@@ -31,10 +28,28 @@ public class AppointmentController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/availabilities/{id}/booked")
+    @GetMapping("/courses/availabilities/{id}")
+    List<Appointment> findAvailabilitiesOfCourse(@PathVariable Long id) {
+
+        return availabilityService.findAvailabilitiesOfTeacherStartFromNow(id, false)
+                .stream()
+                .map(availabilityConverter::convertToAppointment)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/teachers/availabilities/{id}/booked")
     List<Appointment> findBookedAvailabilities(@PathVariable Long id) {
 
         return availabilityService.findAvailabilitiesOfTeacherStartFromNow(id, true)
+                .stream()
+                .map(availabilityConverter::convertToAppointment)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/courses/availabilities/{id}/booked")
+    List<Appointment> findBookedAvailabilitiesOfCourses(@PathVariable Long id) {
+
+        return availabilityService.findAvailabilitiesOfCourseStartFromNow(id, true)
                 .stream()
                 .map(availabilityConverter::convertToAppointment)
                 .collect(Collectors.toList());
@@ -44,7 +59,7 @@ public class AppointmentController {
      * @param id : the teacher id
      * @return
      */
-    @GetMapping("/availabilities/{id}/all")
+    @GetMapping("/teachers/availabilities/{id}/all")
     List<Appointment> findAllAvailabilities(@PathVariable Long id) {
 
         return availabilityService.findAvailabilitiesOfTeacher(id)
@@ -53,8 +68,18 @@ public class AppointmentController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/availabilities")
-    Availability newAvailability(@RequestBody Availability availability) {
-        return availabilityService.save(availability);
+    /**
+     * @param id : the course id
+     * @return
+     */
+    @GetMapping("/courses/availabilities/{id}/all")
+    List<Appointment> findAllAvailabilitiesOfCourses(@PathVariable Long id) {
+
+        return availabilityService.findAvailabilitiesOfCourse(id)
+                .stream()
+                .map(availabilityConverter::convertToAppointment)
+                .collect(Collectors.toList());
     }
+
+
 }

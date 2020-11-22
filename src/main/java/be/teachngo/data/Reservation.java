@@ -50,6 +50,10 @@ public class Reservation {
     @JoinColumn(name = "id_adresse")
     private Address address;
 
+    @OneToOne
+    @JoinColumn(name = "id_availability", nullable = false)
+    private Availability availability;
+
 
     @Transient
     private String ErrorMessage;

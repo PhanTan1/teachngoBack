@@ -1,8 +1,8 @@
 package be.teachngo.service;
 
-import be.teachngo.data.Availability;
 import be.teachngo.data.Payement;
-import be.teachngo.data.Reservation;
+
+import java.util.List;
 
 public interface PayementService {
 
@@ -11,10 +11,10 @@ public interface PayementService {
      * If the payement will be not succeed, the reservation will have the status of Booked
      * and the availability will be not bookd
      *
-     * @param reservation
      * @param payement
-     * @param availability
      * @return
      */
-    Payement makeAPayement(Reservation reservation, Payement payement, Availability availability);
+    Payement makeAPayement(Payement payement);
+
+    List<Payement> getAllPayements();
 }

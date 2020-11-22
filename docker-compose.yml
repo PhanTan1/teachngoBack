@@ -1,0 +1,29 @@
+version: "3"
+services:
+  mysqldb:
+    image: mysql:8.0.16
+    container_name: 'teachngo_mysql'
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootroot
+      - MYSQL_DATABASE=blog_db
+      - MYSQL_PASSWORD=rootroot
+    networks:
+      - 'ayadis_network'
+
+  teachngo:
+    image: teachngo
+    build: .
+    restart: unless-stopped
+    container_name: 'teachngo'
+    environment:
+      DB_URL: 'jdbc:mysql://mysqldb:3306/teachngodb?serverTimezone=UTC'
+    ports:
+      - "80:8080"
+    networks:
+      - 'ayadis_network'
+    depends_on:
+      - mysqldb
+
+networks:
+  ayadis_network:
+    driver: bridge

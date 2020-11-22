@@ -6,6 +6,7 @@ import be.teachngo.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,11 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoderBean;
+
+
+
     @GetMapping("/students/{postalCode}")
     public List<Student> index(@PathVariable String postalCode) {
         List<Student> students = studentService.getAllStudentsAvailableOn(postalCode);
@@ -33,34 +39,29 @@ public class StudentController {
 
     @GetMapping("/students")
     public List<Student> getUsers() {
-        return this.studentService.findAll();
+        List<Student> all = this.studentService.findAll();
+        // security reasons
+        all.stream()
+                .forEach(student -> student.setPassword("XXXXXXXX"));
+        return all;
     }
 
-    @GetMapping("/newUser")
-    public Student getUsers(@RequestParam("token") String token, @RequestParam("login") String login) {
-        Student student = studentService.findByLogin(login);
-        if (token != null
-                && student != null
-                && !student.isActive()
-                && student.getToken().equals(token)) {
-
-            student.setActive(true);
-            student = studentService.save(student);
-        }
-        return student;
-    }
 
     @PostMapping("/students")
     Student newStudent(@RequestBody Student newStudent, HttpServletRequest request) {
         // Generate the token
         String token = UUID.randomUUID().toString();
         newStudent.setToken(token);
-        newStudent = studentService.save(newStudent);
+        newStudent.setPassword(passwordEncoderBean.encode(newStudent.getPassword()));
+        final Student student = studentService.save(newStudent);
         // TODO : May be this will be not working when we dockerise the app ?!
-        String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-        SimpleMailMessage newEmail = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, newStudent);
-        mailSender.send(newEmail);
-        return newStudent;
+        new Thread(() -> {
+            String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+            SimpleMailMessage newEmail = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, student);
+            mailSender.send(newEmail);
+        }).start();
+        student.setPassword("XXXXXXX");
+        return student;
     }
 
     @DeleteMapping("/students")

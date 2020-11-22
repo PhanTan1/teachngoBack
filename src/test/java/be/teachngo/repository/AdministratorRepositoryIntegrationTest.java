@@ -20,9 +20,7 @@ public class AdministratorRepositoryIntegrationTest {
     @Autowired
     private AdministratorRepository administratorRepository;
 
-    @Test
-    public void whenFindByLogin_thenReturnAdministrator() {
-        // given
+    public static Administrator getAdministrator() {
         Administrator admin = new Administrator();
         admin.setEmail("admin@teachngo.com");
         admin.setFirstName("Admin");
@@ -39,13 +37,20 @@ public class AdministratorRepositoryIntegrationTest {
         address.setStreet("Borgtstraat");
         address.setStreetNumber("12A");
         admin.setAdress(address);
+        return admin;
+    }
+
+    @Test
+    public void whenFindByLogin_thenReturnAdministrator() {
+        // given
+        Administrator admin = getAdministrator();
         administratorRepository.save(admin);
 
         // when
         Administrator found = administratorRepository.findByLogin(admin.getLogin());
 
         // then
-        assertEquals(found.getLogin(),admin.getLogin());
+        assertEquals(found.getLogin(), admin.getLogin());
 
         assertEquals(found.getAdress().getStreet(), admin.getAdress().getStreet());
 

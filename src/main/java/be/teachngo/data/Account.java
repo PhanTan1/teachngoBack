@@ -29,7 +29,7 @@ public abstract class Account implements Serializable {
     private AccountStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "id_user")
+    @JoinColumn(name = "id_user", nullable = false)
     private User user;
 
 

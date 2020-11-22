@@ -15,6 +15,7 @@ public class MailConstructor {
     private Environment env;
 
     public SimpleMailMessage constructResetTokenEmail(String contextPath, Locale locale, String token, User user) {
+        // TODO : example www.teachngo.be/confirmation/{token}/{login}
         String url = contextPath + "/api/newUser?token=" + token + "&login=" + user.getLogin();
         String message = "\n Valider votre inscription avec ce lien :\n";
         SimpleMailMessage email = new SimpleMailMessage();

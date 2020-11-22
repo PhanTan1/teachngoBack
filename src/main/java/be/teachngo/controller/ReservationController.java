@@ -16,11 +16,13 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
+    // add dispo pour un prof
     @PostMapping("/reservations")
     Reservation newAvailability(@RequestBody Reservation reservation) {
         return reservationService.makeAReservation(reservation);
     }
 
+    // affiché toutes les réservations pour student ou teacher
     @GetMapping("/reservations")
     List<Reservation> getAllReservations() {
         return reservationService.getAllReservations();
