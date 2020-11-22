@@ -1,0 +1,14 @@
+package be.teachngo.repository;
+
+import be.teachngo.data.Review;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface ReviewRepository extends JpaRepository<Review, Long> {
+
+
+    List<Review> findByReservationCourseTeacherId(Long id);
+
+    List<Review> findByReservationStudentId(Long id);
+}

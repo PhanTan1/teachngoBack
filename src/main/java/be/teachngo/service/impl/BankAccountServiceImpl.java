@@ -1,6 +1,7 @@
 package be.teachngo.service.impl;
 
 import be.teachngo.data.*;
+import be.teachngo.repository.AccountRepository;
 import be.teachngo.repository.BankAccountRepository;
 import be.teachngo.repository.PayPalAccountRepository;
 import be.teachngo.repository.UserRepository;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -22,6 +24,8 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Override
     public BankAccount save(BankAccount bankAccount, User user) {
@@ -56,5 +60,10 @@ public class BankAccountServiceImpl implements BankAccountService {
             payPalAccount.setUpdateDate(new Date());
         }
         return payPalAccountRepository.save(payPalAccount);
+    }
+
+    @Override
+    public List<Account> getAccounts(User user) {
+        return accountRepository.findByUserId(user.getId());
     }
 }

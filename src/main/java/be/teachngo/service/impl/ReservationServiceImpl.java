@@ -5,6 +5,8 @@ import be.teachngo.repository.*;
 import be.teachngo.service.PayementService;
 import be.teachngo.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,8 +51,16 @@ public class ReservationServiceImpl implements ReservationService {
             // we can't make a reservation for not existing course
             throw new IllegalStateException("course can't be null in an availability");
         }
-        // TODO : delete this line once we implement the security
-        reservation.setStudent(studentRepository.findAll().get(0));
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        final Student student;
+        if (authentication.getPrincipal() instanceof Student) {
+            student = studentRepository.getOne(((Student) authentication.getPrincipal()).getId());
+        } else {
+            throw new IllegalArgumentException("Only Student can do reservation");
+        }
+
+        reservation.setStudent(student);
         // validate that the Student haven't another booked course at the same dates
         Optional<Reservation> inter = reservationRepository.findByStudentId(reservation.getStudent().getId())
                 .stream()

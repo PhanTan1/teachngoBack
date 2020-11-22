@@ -11,7 +11,6 @@ import java.util.Date;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
-
 public abstract class Account implements Serializable {
 
     @Id

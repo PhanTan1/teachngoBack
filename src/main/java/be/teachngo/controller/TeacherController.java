@@ -42,7 +42,10 @@ public class TeacherController {
 
     @GetMapping("/teachers")
     public List<Teacher> index() {
-        return teacherService.getAllTeachers();
+        List<Teacher> allTeachers = teacherService.getAllTeachers();
+        allTeachers.stream()
+                .forEach(teacher -> teacher.setPassword("XXXXXX"));
+        return allTeachers;
     }
     @GetMapping("/teachers/{postalCode}")
     public List<Teacher> findTeachersByPostalCode(@PathVariable String postalCode) {

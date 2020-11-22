@@ -31,7 +31,7 @@ public class AppointmentController {
     @GetMapping("/courses/availabilities/{id}")
     List<Appointment> findAvailabilitiesOfCourse(@PathVariable Long id) {
 
-        return availabilityService.findAvailabilitiesOfTeacherStartFromNow(id, false)
+        return availabilityService.findAvailabilitiesOfCourseStartFromNow(id, false)
                 .stream()
                 .map(availabilityConverter::convertToAppointment)
                 .collect(Collectors.toList());

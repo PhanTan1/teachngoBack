@@ -18,8 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static be.teachngo.data.Role.ADMIN;
-import static be.teachngo.data.Role.TEACHER;
+import static be.teachngo.data.Role.*;
 
 @Configuration
 @EnableWebSecurity
@@ -67,6 +66,9 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/courses")
                 .hasRole(ADMIN.name())
                 .antMatchers(HttpMethod.POST,
+                        "/api/reviews", "/api/reservations")
+                .hasRole(STUDENT.name())
+                .antMatchers(HttpMethod.POST,
                         "/teachers/addCourse")
                 .hasRole(TEACHER.name())
                 .anyRequest().authenticated();
@@ -95,6 +97,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                         HttpMethod.GET,
                         "/api/students", "/api/teachers",
                         "/api/courses", "/api/courses/**",
+                        "/api/reviews", "/api/reviews/**/*",
                         "/api/newUser", "/api/downloadFile/**/*",
                         "/api/teachers/availabilities/**/*",
                         "/api/courses/availabilities/**/*"
