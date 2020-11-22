@@ -101,7 +101,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                         //Ignore the inscription of Teacher and Student
                 ).antMatchers(
                 HttpMethod.POST,
-                "/api/students", "/api/teachers" //Ignore the inscription of Teacher and Student
+                "/api/students", "/api/teachers"
         );
     }
 }
