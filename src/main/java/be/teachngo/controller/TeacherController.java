@@ -55,10 +55,6 @@ public class TeacherController {
         return teachers;
     }
 
-    /*@GetMapping("/teachers")
-    public List < Teacher > getUsers() {
-        return this.teacherService.findAll();
-    } */
 
     @PostMapping("/teachers")
     Teacher newTeacher(@RequestBody Teacher newTeacher, HttpServletRequest request) {

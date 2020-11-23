@@ -40,7 +40,7 @@ public class StudentController {
     @GetMapping("/students")
     public List<Student> getUsers() {
         List<Student> all = this.studentService.findAll();
-        // security reasons
+        // security
         all.stream()
                 .forEach(student -> student.setPassword("XXXXXXXX"));
         return all;
@@ -54,7 +54,6 @@ public class StudentController {
         newStudent.setToken(token);
         newStudent.setPassword(passwordEncoderBean.encode(newStudent.getPassword()));
         final Student student = studentService.save(newStudent);
-        // TODO : May be this will be not working when we dockerise the app ?!
         new Thread(() -> {
             String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
             SimpleMailMessage newEmail = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, student);
